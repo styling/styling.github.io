@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vanery&#39;s blog</title>
+  <meta name="author" content="vanery">
+  
+  <meta name="description" content="青梅竹马">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Vanery&#39;s blog"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="Vanery&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Vanery&#39;s blog</a></h1>
+  <h2><a href="/">青梅枯萎，竹马老去，从此我爱上的人都像你</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+  	<li> <a href="/atom.xml">RSS</a> </li>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">存档</a></li>
+    
+      <li><a href="/about">关于</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-02-19T02:03:03.000Z"><a href="/2014/02/19/drag/">2月 19 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/19/drag/"></a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2 id="1-">1.拖拽</h2>
+<p>一直说热爱前端，又一直这么懒。想了想是应该写些东西了。</p>
+<p>虽然每个人的需求不同，但需要解决的问题却是不尽相同的：</p>
+<ul>
+<li>拖拽（自定义或默认）</li>
+<li>内容（自定义或默认）</li>
+<li>动画（自定义或默认）</li>
+<li>定位（自定义或默认)  </li>
+</ul>
+<hr>
+<h3 id="1-1-">1.1拖拽的事件类型：</h3>
+<ul>
+<li>drag</li>
+<li>dragStart</li>
+<li>dragEnd  </li>
+</ul>
+<p><strong>说这个之前先发下事件模型</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="code"><pre><span class="keyword">var</span> EventDisp = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+	<span class="keyword">this</span>.events = {};
+}
+<span class="keyword">var</span> EventDisp = {};
+EventDisp.events = [];
+EventDisp.on = <span class="function"><span class="keyword">function</span><span class="params">(ev, fn)</span> {</span>
+	<span class="comment">//</span>
+};
+EventDisp.trigger = <span class="function"><span class="keyword">function</span><span class="params">(ev)</span> {</span>
+	<span class="comment">//</span>
+};
+EventDisp.off = <span class="function"><span class="keyword">function</span><span class="params">(ev)</span> {</span>
+	<span class="comment">//</span>
+};
+EventDisp.addEvent = <span class="function"><span class="keyword">function</span><span class="params">(elem, etype, fn)</span> {</span>
+	<span class="comment">//</span>
+},
+
+EventDisp.removeEvent = <span class="function"><span class="keyword">function</span><span class="params">(elem, etype, fn)</span> {</span>
+	<span class="comment">//</span>
+};
+</pre></td></tr></table></figure>
+
+<p><strong>drag事件</strong>拖拽过程中持续触发的事件，类似于 mousemove：  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>EventDisp.on(elem, <span class="string">"drag"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(ev)</span> {</span>
+	<span class="comment">//ev.drag、ev.target 拖拽元素本身。</span>
+	<span class="comment">//ev.pageX 鼠标指针的 X 轴坐标</span>
+	<span class="comment">//ev.pageY 鼠标指针的 Y 轴坐标</span>
+});
+</pre></td></tr></table></figure>
+
+<p><strong>dragStart事件</strong>拖拽开始时触发的事件，类似于 mousedown 。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>EventDisp.on(elem, <span class="string">"dragStart"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(ev)</span> {</span>
+	<span class="comment">//ev.drag 拖拽元素本身。</span>
+    <span class="comment">//ev.target 触发拖拽的元素。</span>
+});
+</pre></td></tr></table></figure>
+
+<p><strong>dragEnd事件</strong>拖拽结束后触发的事件，类似于 mouseup。  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>EventDisp.on(elem, <span class="string">"dragEnd"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(ev)</span> {</span>
+	<span class="comment">//ev.drag 拖拽元素本身。</span>
+    <span class="comment">//ev.target 触发拖拽的元素。</span>
+});
+</pre></td></tr></table></figure>
+
+<h3 id="2-drag-">2.drag默认参数</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="comment">/**
+ * @param target    { Object }    拖拽对象
+ * @param options.axis    { String }    拖拽方向
+ * @param options.container    { Object }    拖拽容易
+ * @param options.handle    { String }    指定区域
+ * @param options.proxy    { Boolean }    拖拽代理
+ * @param options.refresh    { Boolean }    更新拖拽
+ */</span>
+<span class="keyword">var</span> dragO = <span class="keyword">new</span> Drag(target, options);
+</pre></td></tr></table></figure>
+
+<p><em>下回继续</em></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:vanery.cn">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/javascript, drag, dialog/" style="font-size: NaNpx;">javascript, drag, dialog</a>
+  </div>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 vanery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
